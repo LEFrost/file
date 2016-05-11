@@ -31,16 +31,30 @@ namespace file
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            StorageFolder folder = ApplicationData.Current.LocalFolder;
-            StorageFile file = await folder.CreateFileAsync(filename, CreationCollisionOption.OpenIfExists);
-            await FileIO.WriteTextAsync(file, input.Text);
+            Button b = sender as Button;
+            IO(b, filename);
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            var fold = ApplicationData.Current.LocalFolder;
-            StorageFile file = await fold.GetFileAsync(filename);
-            output.Text = await FileIO.ReadTextAsync(file);
+            Button b = sender as Button;
+            IO(b, filename);
         }
+
+        async void IO(Button b, string name)
+        {
+                StorageFolder fold = ApplicationData.Current.LocalFolder;
+            if (b.Content.ToString() == "储存")
+            {
+                StorageFile file = await fold.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
+                await FileIO.WriteTextAsync(file, input.Text);
+            }
+            else if(b.Content.ToString()=="显示")
+            {
+                StorageFile file = await fold.GetFileAsync(name);
+                output.Text= await FileIO.ReadTextAsync(file);
+            }
+        }
+
     }
 }
